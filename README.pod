@@ -1,0 +1,182 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Tinkoff::Invest - Perl Tinkoff Invest OpenAPI interface</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:mat@FreeBSD.org" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#CONSTRUCTOR">CONSTRUCTOR</a></li>
+  <li><a href="#ATTRIBUTES">ATTRIBUTES</a>
+    <ul>
+      <li><a href="#errstatus">errstatus</a></li>
+      <li><a href="#errstr">errstr</a></li>
+      <li><a href="#returned_json">returned_json</a></li>
+    </ul>
+  </li>
+  <li><a href="#METHODS">METHODS</a>
+    <ul>
+      <li><a href="#register_sandbox">register_sandbox</a></li>
+      <li><a href="#set_currencies_balance">set_currencies_balance</a></li>
+      <li><a href="#set_positions_balance">set_positions_balance</a></li>
+      <li><a href="#sandbox_remove">sandbox_remove</a></li>
+      <li><a href="#sandbox_clear">sandbox_clear</a></li>
+      <li><a href="#orders">orders</a></li>
+      <li><a href="#limit_order">limit_order</a></li>
+      <li><a href="#market_order">market_order</a></li>
+      <li><a href="#cancel_order">cancel_order</a></li>
+      <li><a href="#portfolio">portfolio</a></li>
+      <li><a href="#search_by_figi">search_by_figi</a></li>
+      <li><a href="#operations">operations</a></li>
+      <li><a href="#accounts">accounts</a></li>
+      <li><a href="#set_account">set_account</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>Tinkoff::Invest - Perl Tinkoff Invest OpenAPI interface</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>        use strict;
+        use warnings;
+
+        use Tinkoff::Invest;</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p><a>Tinkoff::Invest</a> is a Perl module for Tinkoff Invest Api. You can find more information about REST protocol here: https://tinkoffcreditsystems.github.io/invest-openapi/swagger-ui/ . More guides and information here: https://tinkoffcreditsystems.github.io/invest-openapi/</p>
+
+<h1 id="CONSTRUCTOR">CONSTRUCTOR</h1>
+
+<pre><code>        $tinky = Tinkoff::Invest-&gt;new( token =&gt; $token, [ debug =&gt; 0 ] );</code></pre>
+
+<h1 id="ATTRIBUTES">ATTRIBUTES</h1>
+
+<h2 id="errstatus">errstatus</h2>
+
+<pre><code>        $tinky-&gt;{errstatus};</code></pre>
+
+<p>Returns status of last operation (mostly https request). <code>200 OK</code> or <code>500 Internal Server Error</code> for now.</p>
+
+<h2 id="errstr">errstr</h2>
+
+<pre><code>        $tinky-&gt;{errstr};</code></pre>
+
+<p>Contains last error message. Pasred from <code>&lt;payload-</code>message&gt;&gt; of returnes json.</p>
+
+<h2 id="returned_json">returned_json</h2>
+
+<pre><code>        $tinky-&gt;{returned_json};</code></pre>
+
+<p>Contains returned json for last request.</p>
+
+<h1 id="METHODS">METHODS</h1>
+
+<p>Methods mostly a simple request to an api. <code>[ name =&gt; default ]</code> - optional parameters with default value.</p>
+
+<h2 id="register_sandbox">register_sandbox</h2>
+
+<pre><code>        $tinky-&gt;register_sandbox;</code></pre>
+
+<p>Registers sandbox and uses brokerAccountId for further methods (you may not pass accoountId).</p>
+
+<h2 id="set_currencies_balance">set_currencies_balance</h2>
+
+<pre><code>        $tinky-&gt;set_currencies_balance( [ currency =&gt; &#39;RUB&#39;, balance =&gt; 0, accountId =&gt; $brokerAccountId ] );</code></pre>
+
+<p>Sets the balance of currency.</p>
+
+<h2 id="set_positions_balance">set_positions_balance</h2>
+
+<pre><code>        $tinky-&gt;set_positions_balance( figi =&gt; $figi, [ balance =&gt; 0, accountId =&gt; $brokerAccountId ] );</code></pre>
+
+<p>Sets balances for positions by figi.</p>
+
+<h2 id="sandbox_remove">sandbox_remove</h2>
+
+<pre><code>        $tinky-&gt;sandbox_remove( [ accountId =&gt; $brokerAccountId ] );</code></pre>
+
+<p>Removes sandbox account</p>
+
+<h2 id="sandbox_clear">sandbox_clear</h2>
+
+<pre><code>        $tinky-&gt;sandbox_clear( [ accountId =&gt; $brokerAccountId ] );</code></pre>
+
+<p>Clears all positions of client</p>
+
+<h2 id="orders">orders</h2>
+
+<pre><code>        $tinky-&gt;orders( [ accountId =&gt; $brokerAccountId ] );</code></pre>
+
+<p>Returns active orders.</p>
+
+<h2 id="limit_order">limit_order</h2>
+
+<pre><code>        $tinky-&gt;limit_order( figi =&gt; $figi, lots =&gt; $lots, price =&gt; $price, [ operation =&gt; &#39;Buy&#39; ] );</code></pre>
+
+<p>Limit order creation. <code>&#39;Buy&#39;</code> or <code>&#39;Sell&#39;</code> operation.</p>
+
+<h2 id="market_order">market_order</h2>
+
+<pre><code>        $tinky-&gt;market_order( figi =&gt; $figi, lots =&gt; $lots, [ operation =&gt; &#39;Buy&#39; ] );</code></pre>
+
+<p>Creates market order. <code>&#39;Buy&#39;</code> or <code>&#39;Sell&#39;</code> operation.</p>
+
+<h2 id="cancel_order">cancel_order</h2>
+
+<pre><code>        $tinky-&gt;cancel_order( orderId =&gt; $orderId );</code></pre>
+
+<p>Cancels order by orderId</p>
+
+<h2 id="portfolio">portfolio</h2>
+
+<pre><code>        $tinky-&gt;portfolio( [ accountId =&gt; $brokerAccountId ] );</code></pre>
+
+<p>Returns investor&#39;s portfolio (stocks, bonds, etfs and currencies).</p>
+
+<h2 id="search_by_figi">search_by_figi</h2>
+
+<pre><code>        $tinky-&gt;search_by_figi( $figi );</code></pre>
+
+<p>Returns information by figi ( name, ticker etc. ).</p>
+
+<h2 id="operations">operations</h2>
+
+<pre><code>        $tinky-&gt;operations(from=&gt;$datetime_from, to=&gt;$datetime_to, [ figi =&gt; &#39;&#39;, accountId =&gt; $brokerAccountId ] );</code></pre>
+
+<p>Returns operations for interval. <code>from</code> and <code>to</code> must be ISO datetime with or without timezone (ex: &#39;2021-06-14T00:00:00+03:00&#39; or &#39;2021-06-20T00:00:00Z&#39; ). If <code>figi</code> is omitted all operations if this interval will be returned.</p>
+
+<h2 id="accounts">accounts</h2>
+
+<pre><code>        $accounts = $tinky-&gt;accounts();</code></pre>
+
+<p>Returns all acounts.</p>
+
+<h2 id="set_account">set_account</h2>
+
+<pre><code>        $tinky-&gt;set_account( $brokerAccountId );</code></pre>
+
+<p>Sets account for use as a default for further methods (you may not pass accoountId). Example:</p>
+
+<pre><code>        $accounts = $tinky-&gt;accounts();
+        $tinky-&gt;set_account( $accounts-&gt;{payload}-&gt;{accounts}[0]-&gt;{brokerAccountId} );
+        $tinky-&gt;operations( from=&gt;&#39;2021-06-14T00:00:00+03:00&#39;, to =&gt; &#39;2021-06-20T00:00:00Z&#39; ); # accountId is omitted</code></pre>
+
+
+</body>
+
+</html>
+
+
