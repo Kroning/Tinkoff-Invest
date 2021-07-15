@@ -35,7 +35,15 @@
       <li><a href="#market_order">market_order</a></li>
       <li><a href="#cancel_order">cancel_order</a></li>
       <li><a href="#portfolio">portfolio</a></li>
+      <li><a href="#portfolio_currencies">portfolio_currencies</a></li>
+      <li><a href="#market_stocks">market_stocks</a></li>
+      <li><a href="#market_bonds">market_bonds</a></li>
+      <li><a href="#market_etfs">market_etfs</a></li>
+      <li><a href="#market_currencies">market_currencies</a></li>
+      <li><a href="#market_orderbook">market_orderbook</a></li>
+      <li><a href="#market_candles">market_candles</a></li>
       <li><a href="#search_by_figi">search_by_figi</a></li>
+      <li><a href="#search_by_ticker">search_by_ticker</a></li>
       <li><a href="#operations">operations</a></li>
       <li><a href="#accounts">accounts</a></li>
       <li><a href="#set_account">set_account</a></li>
@@ -146,11 +154,59 @@
 
 <p>Returns investor&#39;s portfolio (stocks, bonds, etfs and currencies).</p>
 
+<h2 id="portfolio_currencies">portfolio_currencies</h2>
+
+<pre><code>        $tinky-&gt;portfolio_currencies();</code></pre>
+
+<p>Returns short currencies balance.</p>
+
+<h2 id="market_stocks">market_stocks</h2>
+
+<pre><code>        $tinky-&gt;market_stocks();</code></pre>
+
+<p>Returns information about all stocks.</p>
+
+<h2 id="market_bonds">market_bonds</h2>
+
+<pre><code>        $tinky-&gt;market_bonds();</code></pre>
+
+<p>Returns information about all bonds.</p>
+
+<h2 id="market_etfs">market_etfs</h2>
+
+<pre><code>        $tinky-&gt;market_etfs();</code></pre>
+
+<p>Returns information about all ETFs.</p>
+
+<h2 id="market_currencies">market_currencies</h2>
+
+<pre><code>        $tinky-&gt;market_currencies();</code></pre>
+
+<p>Returns information about all currencies (currently there are RUB and USD only).</p>
+
+<h2 id="market_orderbook">market_orderbook</h2>
+
+<pre><code>        $tinky-&gt;market_orderbook( figi =&gt; $figi, [ depth =&gt; 20 ] );</code></pre>
+
+<p>Returns orderbook (asks and bids) by figi.</p>
+
+<h2 id="market_candles">market_candles</h2>
+
+<pre><code>        $tinky-&gt;market_candles( figi =&gt; $figi, from =&gt; $from, to =&gt; $from, interval =&gt; $interval );</code></pre>
+
+<p>Returns historical candles by figi. <code>from</code> and <code>to</code> must be ISO datetime with or without timezone (ex: &#39;2021-06-14T00:00:00+03:00&#39; or &#39;2021-06-20T00:00:00Z&#39; ). Available <code>interval</code> values: 1min, 2min, 3min, 5min, 10min, 15min, 30min, hour, day, week, month .</p>
+
 <h2 id="search_by_figi">search_by_figi</h2>
 
 <pre><code>        $tinky-&gt;search_by_figi( $figi );</code></pre>
 
 <p>Returns information by figi ( name, ticker etc. ).</p>
+
+<h2 id="search_by_ticker">search_by_ticker</h2>
+
+<pre><code>        $tinky-&gt;search_by_ticker( $ticker );</code></pre>
+
+<p>Returns information by ticker ( name, ticker etc. ).</p>
 
 <h2 id="operations">operations</h2>
 

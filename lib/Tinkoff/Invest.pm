@@ -38,13 +38,6 @@ sub new {
 	return $self;
 }
 
-#sub switch_to_sandbox {
-#	my $self = shift;
-#	$self->{api_url} = $sanbox_url;
-#	my $result = $self->register_sandbox();
-#	return $result;
-#}
-
 sub set_account {
 	my ( $self, $account ) = @_;
 	return undef if !$account;
@@ -143,10 +136,45 @@ sub portfolio_currencies {
 
 #==== Market ====
 
-sub stokssssssssssssssssssssssssss {
-  my ( $self, $figi ) = @_;
-  Carp::croak("You must provide figi") if !$figi;
-  my $result = $self->http_get( "/market/search/by-figi?figi=$figi" );
+sub market_stocks {
+  my ( $self ) = @_;
+  my $result = $self->http_get( "/market/stocks" );
+  return $result;
+}
+
+sub market_bonds {
+  my ( $self ) = @_;
+  my $result = $self->http_get( "/market/bonds" );
+  return $result;
+}
+
+sub market_etfs {
+  my ( $self ) = @_;
+  my $result = $self->http_get( "/market/etfs" );
+  return $result;
+}
+
+sub market_currencies {
+  my ( $self ) = @_;
+  my $result = $self->http_get( "/market/currencies" );
+  return $result;
+}
+
+sub market_orderbook {
+  my $self = shift;
+  my %params = ( depth => 20, @_ );
+  Carp::croak("You must provide figi and depth") if !$params{figi} or !$params{depth};
+  my $result = $self->http_get( "/market/orderbook?figi=$params{figi}&depth=$params{depth}" );
+  return $result;
+}
+
+sub market_candles {
+  my $self = shift;
+	my %params = ( @_ );
+  Carp::croak("You must provide figi, from, to and interval") if !$params{figi} or !$params{from} or !$params{to} or !$params{interval};
+  $params{from} = uri_escape( $params{from} );
+  $params{to} = uri_escape( $params{to} );
+  my $result = $self->http_get( "/market/candles?figi=$params{figi}&from=$params{from}&to=$params{to}&interval=$params{interval}" );
   return $result;
 }
 
@@ -155,6 +183,13 @@ sub search_by_figi {
 	Carp::croak("You must provide figi") if !$figi;
 	my $result = $self->http_get( "/market/search/by-figi?figi=$figi" );
 	return $result;
+}
+
+sub search_by_ticker {
+  my ( $self, $ticker ) = @_;
+  Carp::croak("You must provide ticker") if !$ticker;
+  my $result = $self->http_get( "/market/search/by-ticker?ticker=$ticker" );
+  return $result;
 }
 
 #==== Operations ====
@@ -355,11 +390,59 @@ Cancels order by orderId
 
 Returns investor's portfolio (stocks, bonds, etfs and currencies).
 
+=head2 portfolio_currencies
+
+	$tinky->portfolio_currencies();
+
+Returns short currencies balance.
+
+=head2 market_stocks
+
+	$tinky->market_stocks();
+
+Returns information about all stocks.
+
+=head2 market_bonds
+
+	$tinky->market_bonds();
+
+Returns information about all bonds.
+
+=head2 market_etfs
+
+	$tinky->market_etfs();
+
+Returns information about all ETFs.
+
+=head2 market_currencies
+
+	$tinky->market_currencies();
+
+Returns information about all currencies (currently there are RUB and USD only).
+
+=head2 market_orderbook
+
+	$tinky->market_orderbook( figi => $figi, [ depth => 20 ] );
+
+Returns orderbook (asks and bids) by figi.
+
+=head2 market_candles
+
+	$tinky->market_candles( figi => $figi, from => $from, to => $from, interval => $interval );
+
+Returns historical candles by figi. C<from> and C<to> must be ISO datetime with or without timezone (ex: '2021-06-14T00:00:00+03:00' or '2021-06-20T00:00:00Z' ). Available C<interval> values: 1min, 2min, 3min, 5min, 10min, 15min, 30min, hour, day, week, month .
+
 =head2 search_by_figi
 
 	$tinky->search_by_figi( $figi );
 
 Returns information by figi ( name, ticker etc. ).
+
+=head2 search_by_ticker
+
+	$tinky->search_by_ticker( $ticker );
+
+Returns information by ticker ( name, ticker etc. ).
 
 =head2 operations
 

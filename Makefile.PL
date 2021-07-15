@@ -17,8 +17,12 @@ my %WriteMakefileArgs = (
         'Test::More' => '0',
     },
     PREREQ_PM => {
-        #'ABC'              => '1.6',
-        #'Foo::Bar::Module' => '5.0401',
+				'Carp' => '0',
+				'HTTP::Request::Common' => '0',
+				'LWP::UserAgent' => '0',
+				'JSON' => '0',
+				'Data::Dumper' => '0',
+				'URI::Escape' => '0'
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Tinkoff-Invest-*' },
